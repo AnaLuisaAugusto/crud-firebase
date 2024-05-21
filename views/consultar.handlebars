@@ -1,0 +1,32 @@
+<div class="container">
+    <br><p class="text-center fs-5">Página de Consulta de Clientes</p><br>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Telefone</th>
+                <th>Origem</th>
+                <th>Data Contato</th>
+                <th>Observação</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each clientes}}
+            <tr>
+                <td>{{this.nome}}</td>
+                <td>{{this.telefone}}</td>
+                <td>{{this.origem}}</td>
+                <td>{{this.data_contato}}</td>
+                <td>{{this.observacao}}</td>
+                <td>
+                    <a href="/editar/{{id}}"><button class="btn btn-primary">Editar</button></a>
+                    <button class="btn btn-danger">Excluir</button>
+                </td>
+            </tr>
+            {{/each}}
+            <!-- Adicione mais linhas conforme necessário -->
+        </tbody>
+    </table>
+</div>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
