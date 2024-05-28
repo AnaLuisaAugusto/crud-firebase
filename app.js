@@ -13,7 +13,14 @@ initializeApp({
 
 const db = getFirestore()
 
-app.engine("handlebars", handlebars({defaultLayout: "main"}))
+app.engine("handlebars", handlebars({
+  defaultLayout: "main",
+  helpers: {
+    equals: function(a, b){
+      return a ==b;
+    }
+  }
+}))
 app.set("view engine", "handlebars")
 
 app.use(bodyParser.urlencoded({extended: false}))
@@ -40,11 +47,24 @@ app.get("/consultar", async function (req, res) {
     }
 });
  
-app.get("/editar/:id", function(req, res){
-  res.render("editar")
-})
+app.get("/editar/:id", async function (req, res) {
+  const dataSnapshot = await db.collection('agendamentos').doc(req.params.id).get();
+  const data = {
+      id: dataSnapshot.id,
+      nome: dataSnapshot.get('nome'),
+      telefone: dataSnapshot.get('telefone'),
+      origem: dataSnapshot.get('origem'),
+      data_contato: dataSnapshot.get('data_contato'),
+      observacao: dataSnapshot.get('observacao'),
+  };
+
+  res.render("editar", { data });
+});
 
 app.get("/excluir/:id", function(req, res){
+  db.collection('agendamentos').doc(req.params.id).delete().then(function(){
+    res.redirect('/consultar');
+  });
 })
 
 app.post("/cadastrar", function(req, res){
@@ -55,12 +75,24 @@ app.post("/cadastrar", function(req, res){
         data_contato: req.body.data_contato,
         observacao: req.body.observacao
     }).then(function(){
-        console.log('Added document');
         res.redirect('/')
     })
 })
 
 app.post("/atualizar", function(req, res){
+  var result = db
+  .collection("agendamentos")
+  .doc(req.body.id)
+  .update({
+    nome: req.body.nome,
+    telefone: req.body.telefone,
+    origem: req.body.origem,
+    data_contato: req.body.data_contato,
+    observacao: req.body.observacao,
+  })
+  .then(function () {
+    res.redirect("/consultar");
+  });
 })
 
 app.listen(8081, function(){

@@ -20,12 +20,11 @@
                 <td>{{this.data_contato}}</td>
                 <td>{{this.observacao}}</td>
                 <td>
-                    <a href="/editar/{{id}}"><button class="btn btn-primary">Editar</button></a>
-                    <button class="btn btn-danger">Excluir</button>
-                </td>
+                    <a href="/editar/{{this.id}}" class="btn btn-primary">Editar</a>
+                    <a href="/excluir/{{this.id}}" class="btn btn-danger">Excluir</a>
+                </td>   
             </tr>
             {{/each}}
-            <!-- Adicione mais linhas conforme necessário -->
         </tbody>
     </table>
 </div>
